@@ -1,0 +1,23 @@
+class Warehouse:
+    def __init__(self):
+        self.stock = {}
+
+    def add_product(self, product, quantity):
+        self.stock[product.product_id] = {"product": product, "quantity": quantity}
+    
+    def process_orders(self, orders):
+        """Reduce stock levels based on incoming orders and trigger restock if needed."""
+        for order in orders:
+            for product, qty in order.items():
+                if self.stock[product.product_id]["quantity"] >= qty:
+                    self.stock[product.product_id]["quantity"] -= qty
+                    if self.stock[product.product_id]["quantity"] < 10:
+                        print(f"Alert: Restock needed for {product.name}")
+                else:
+                    print(f"Error: Not enough stock for {product.name}")
+
+    def restock_items(self, restock_list):
+        """Restock items based on the provided list."""
+        for product, qty in restock_list.items():
+            self.stock[product.product_id]["quantity"] += qty
+            print(f"{qty} units of {product.name} restocked.")
